@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- ============================================================
+    📌 LANGKAH 1 — Ganti "Nama Kamu" dengan nama aslimu
+  ============================================================ -->
+  <title>Nama Kamu — Portfolio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ============================================================
+      🎨 WARNA — Ubah nilai hex di sini untuk ganti tema
+      --teal  = hijau-biru tegas (warna utama)
+      --mint  = hijau muda segar (aksen)
+    ============================================================ */
+    :root {
+      --teal:    #0d9488;
+      --teal2:   #0f766e;
+      --mint:    #99f6e4;
+      --mint2:   #ccfbf1;
+      --bg:      #f0fdfa;
+      --surface: #ffffff;
+      --dark:    #134e4a;
+      --text:    #1c3735;
+      --muted:   #5f8c88;
+      --border:  #b2e4de;
+      --ff-d: 'Cormorant Garamond', Georgia, serif;
+      --ff-b: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--ff-b); font-weight: 400; overflow-x: hidden; }
+
+    /* Garis tipis progress scroll di atas halaman */
+    #progress {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--mint));
+      z-index: 300; transform-origin: left; transform: scaleX(0);
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 5vw;
+      background: rgba(240,253,250,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo { font-family: var(--ff-d); font-size: 1.45rem; font-weight: 700; color: var(--teal2); text-decoration: none; }
+
+    .nav-links { display: flex; gap: 0.4rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.8rem;
+      font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.4rem 0.85rem; border-radius: 999px; transition: background 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { background: var(--mint2); color: var(--teal2); }
+    .nav-cta { background: var(--teal) !important; color: #fff !important; }
+    .nav-cta:hover { background: var(--teal2) !important; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--teal2); border-radius: 2px; transition: 0.3s; }
+
+    .mobile-menu {
+      display: none; position: fixed; top: 58px; left: 0; right: 0;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      z-index: 199; flex-direction: column; padding: 1.5rem 5vw; gap: 1rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--text); text-decoration: none; font-size: 0.95rem; font-weight: 500; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1.1fr 0.9fr;
+      align-items: center; gap: 4rem;
+      padding: 9rem 5vw 5rem; position: relative;
+    }
+    .hero::before {
+      content: ''; position: absolute;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(153,246,228,0.4) 0%, transparent 70%);
+      right: 6vw; top: 15%; pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--mint2); color: var(--teal2);
+      font-size: 0.73rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.4rem 1rem; border-radius: 999px; margin-bottom: 1.8rem;
+      animation: fadeUp 0.7s ease both;
+    }
+    .hero-tag::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse 2s infinite; }
+
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+    .hero h1 {
+      font-family: var(--ff-d); font-size: clamp(2.8rem, 5vw, 5rem);
+      font-weight: 700; line-height: 1.08; margin-bottom: 1.4rem;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    .hero h1 .name { color: var(--teal); }
+    .hero h1 em { font-style: italic; }
+
+    .hero-desc {
+      font-size: 1rem; line-height: 1.8; color: var(--muted);
+      max-width: 480px; margin-bottom: 2.4rem;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.7s 0.3s ease both; }
+
+    .btn {
+      padding: 0.8rem 1.8rem; border-radius: 999px;
+      font-family: var(--ff-b); font-size: 0.88rem; font-weight: 600;
+      letter-spacing: 0.03em; cursor: pointer; text-decoration: none;
+      border: 2px solid transparent; display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .btn-fill { background: var(--teal); color: #fff; border-color: var(--teal); }
+    .btn-fill:hover { background: var(--teal2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,148,136,.3); }
+    .btn-outline { background: transparent; color: var(--teal); border-color: var(--teal); }
+    .btn-outline:hover { background: var(--mint2); transform: translateY(-2px); }
+
+    /* ─── FOTO PROFIL ─── */
+    .hero-visual { display: flex; justify-content: center; align-items: center; animation: fadeIn 1s 0.4s ease both; }
+
+    .photo-frame { position: relative; width: 300px; height: 370px; }
+    .photo-frame::before {
+      content: ''; position: absolute; inset: -12px -12px 12px 12px;
+      border: 2px solid var(--mint); border-radius: 24px; z-index: 0;
+    }
+
+    .photo-placeholder {
+      width: 100%; height: 100%; border-radius: 18px;
+      background: linear-gradient(135deg, var(--mint2), #b2f5ea);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem;
+      position: relative; z-index: 1; cursor: pointer;
+      border: 2px dashed var(--teal); transition: background 0.2s;
+    }
+    .photo-placeholder:hover { background: var(--mint2); }
+    .photo-placeholder svg { width: 44px; height: 44px; color: var(--teal); }
+    .photo-placeholder p { color: var(--teal2); font-size: 0.83rem; font-weight: 600; text-align: center; padding: 0 1.2rem; }
+    .photo-placeholder small { font-size: 0.7rem; color: var(--muted); }
+
+    .photo-img { width: 100%; height: 100%; object-fit: cover; border-radius: 18px; position: relative; z-index: 1; display: none; }
+    #file-foto { display: none; }
+
+    .badge {
+      position: absolute; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 0.6rem 0.9rem; box-shadow: 0 4px 18px rgba(13,148,136,.12);
+      z-index: 2; display: flex; align-items: center; gap: 0.45rem;
+    }
+    .badge-tl { top: -16px; left: -16px; }
+    .badge-br { bottom: -16px; right: -16px; }
+    .badge-icon { font-size: 1.1rem; }
+    .badge-text { font-size: 0.7rem; font-weight: 700; color: var(--teal2); }
+
+    /* ─── STATS ─── */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      margin: 0 5vw;
+    }
+    .stat { padding: 2rem 1.5rem; text-align: center; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-family: var(--ff-d); font-size: 2.6rem; font-weight: 700; color: var(--teal); line-height: 1; }
+    .stat-label { font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; font-weight: 600; }
+
+    /* ─── SECTION BASE ─── */
+    section { padding: 6rem 5vw; }
+
+    .section-tag {
+      display: inline-block; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal);
+      background: var(--mint2); padding: 0.28rem 0.85rem; border-radius: 999px; margin-bottom: 1rem;
+    }
+    .section-title { font-family: var(--ff-d); font-size: clamp(1.9rem, 3.5vw, 3rem); font-weight: 700; line-height: 1.1; margin-bottom: 0.8rem; }
+    .section-sub { color: var(--muted); max-width: 500px; line-height: 1.75; margin-bottom: 3.5rem; font-size: 0.93rem; }
+
+    /* ─── TENTANG ─── */
+    .about { background: var(--surface); border-top: 1px solid var(--border); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .about-text p { line-height: 1.85; color: var(--muted); margin-bottom: 1rem; font-size: 0.93rem; }
+
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.8rem; }
+    .skill-chip {
+      display: flex; align-items: center; gap: 0.35rem;
+      padding: 0.32rem 0.8rem; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 999px; font-size: 0.76rem; font-weight: 500; color: var(--teal2);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .skill-chip:hover { background: var(--mint2); border-color: var(--teal); }
+    .skill-chip::before { content: '✦'; font-size: 0.5rem; color: var(--teal); }
+
+    .timeline { display: flex; flex-direction: column; }
+    .tl-item { display: grid; grid-template-columns: 88px 1fr; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-year { font-size: 0.76rem; font-weight: 700; color: var(--teal); letter-spacing: 0.06em; padding-top: 0.15rem; }
+    .tl-body h4 { font-weight: 600; margin-bottom: 0.2rem; font-size: 0.92rem; }
+    .tl-body span { font-size: 0.78rem; color: var(--muted); }
+
+    /* ─── PROYEK ─── */
+    .projects { background: var(--bg); }
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+    .project-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .project-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(13,148,136,.13); }
+
+    .card-img { width: 100%; height: 175px; object-fit: cover; display: block; }
+    .card-placeholder { width: 100%; height: 175px; background: linear-gradient(135deg, var(--mint2), #b2f5ea); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+
+    .card-body { padding: 1.4rem; }
+    .card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
+    .card-tag { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); background: var(--mint2); padding: 0.18rem 0.55rem; border-radius: 999px; }
+    .card-body h3 { font-family: var(--ff-d); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.45rem; }
+    .card-body p { font-size: 0.83rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+    .card-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 700; color: var(--teal); text-decoration: none; transition: gap 0.2s; }
+    .card-link:hover { gap: 0.7rem; }
+    .card-link::after { content: '→'; }
+
+    /* ─── UPLOAD DOKUMEN ─── */
+    .docs { background: var(--surface); border-top: 1px solid var(--border); }
+    .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .upload-section-title { font-weight: 600; margin-bottom: 0.8rem; font-size: 0.88rem; color: var(--text); display: flex; align-items: center; gap: 0.4rem; }
+
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: 16px; padding: 2.2rem 1.5rem;
+      text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; position: relative;
+    }
+    .upload-zone:hover, .upload-zone.dragover { border-color: var(--teal); background: var(--mint2); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-icon { font-size: 2.2rem; margin-bottom: 0.7rem; }
+    .upload-zone h4 { font-weight: 600; margin-bottom: 0.25rem; font-size: 0.88rem; }
+    .upload-zone p { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
+    .upload-zone small { display: block; margin-top: 0.7rem; font-size: 0.68rem; color: var(--teal); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+
+    #file-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.8rem; }
+    .file-item { display: flex; align-items: center; gap: 0.7rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 0.9rem; animation: fadeUp 0.3s ease both; }
+    .file-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .file-name { font-size: 0.82rem; font-weight: 500; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-size { font-size: 0.7rem; color: var(--muted); flex-shrink: 0; }
+    .file-del { width: 22px; height: 22px; border-radius: 50%; border: none; background: transparent; cursor: pointer; color: var(--muted); font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s, color 0.2s; flex-shrink: 0; }
+    .file-del:hover { background: #fee2e2; color: #dc2626; }
+
+    #img-preview-area { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.7rem; margin-top: 0.8rem; }
+    .img-thumb { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 1; border: 1px solid var(--border); }
+    .img-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .img-thumb button { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(0,0,0,.55); color: #fff; border: none; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    .note-box { background: var(--mint2); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.4rem; margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: flex-start; }
+    .note-box p { font-size: 0.8rem; color: var(--teal2); line-height: 1.65; }
+
+    /* ─── KONTAK ─── */
+    .contact { background: linear-gradient(135deg, var(--teal2), var(--dark)); color: #fff; text-align: center; }
+    .contact .section-tag { background: rgba(255,255,255,.15); color: var(--mint); }
+    .contact .section-title { color: #fff; }
+    .contact .section-sub { color: rgba(255,255,255,.65); margin: 0 auto 3rem; }
+
+    .contact-cards { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .contact-card {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 16px; padding: 1.4rem 1.8rem; text-decoration: none; color: #fff;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem; min-width: 140px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .contact-card:hover { background: rgba(255,255,255,.2); transform: translateY(-3px); }
+    .contact-card svg { width: 22px; height: 22px; }
+    .contact-card span { font-size: 0.78rem; font-weight: 600; }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--dark); color: rgba(255,255,255,.45); padding: 1.6rem 5vw; display: flex; justify-content: space-between; align-items: center; font-size: 0.76rem; }
+    footer a { color: var(--mint); text-decoration: none; }
+
+    /* ─── ANIMASI ─── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 5vw; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { grid-template-columns: 1fr; padding: 7rem 5vw 4rem; gap: 2.5rem; }
+      .hero-visual { order: -1; }
+      .photo-frame { width: 210px; height: 260px; }
+      .stats-bar { grid-template-columns: repeat(2,1fr); }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .upload-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.6rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress"></div>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  🧭 NAVIGASI                                    ║
+       ║  Ganti "NamaKamu" di logo dan di <title> atas  ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <nav>
+    <a class="logo" href="#home">NamaKamu</a>
+    <ul class="nav-links">
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#projects">Proyek</a></li>
+      <li><a href="#docs">Dokumen</a></li>
+      <li><a href="#contact" class="nav-cta">Kontak</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about"    onclick="toggleMenu()">Tentang</a>
+    <a href="#projects" onclick="toggleMenu()">Proyek</a>
+    <a href="#docs"     onclick="toggleMenu()">Dokumen</a>
+    <a href="#contact"  onclick="toggleMenu()">Kontak</a>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  🏠 HALAMAN UTAMA (HERO)                        ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section class="hero" id="home">
+    <div>
+      <span class="hero-tag">Tersedia untuk kolaborasi</span>
+
+      <!-- ✏️ GANTI: Nama dan profesi kamu -->
+      <h1>Halo, Saya<br><span class="name">Nama Kamu</span><br><em>si Kreatif ✨</em></h1>
+
+      <!-- ✏️ GANTI: Deskripsi singkat tentang dirimu -->
+      <p class="hero-desc">
+        Seorang [profesi / jurusan] yang bersemangat membangun hal-hal
+        bermakna. Berbasis di Malang, selalu terbuka untuk ide dan peluang baru.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-fill">Lihat Portofolio</a>
+        <a href="#contact"  class="btn btn-outline">Hubungi Saya</a>
+      </div>
+    </div>
+
+    <!-- ─── FOTO PROFIL ─── -->
+    <div class="hero-visual">
+      <div class="photo-frame">
+        <!-- Badge pojok kiri atas — ganti teks bila perlu -->
+        <div class="badge badge-tl">
+          <span class="badge-icon">✨</span>
+          <span class="badge-text">Available</span>
+        </div>
+        <!-- Badge pojok kanan bawah -->
+        <div class="badge badge-br">
+          <span class="badge-icon">📍</span>
+          <span class="badge-text">Malang, ID</span>
+        </div>
+
+        <!-- Klik area ini untuk upload foto profil -->
+        <div class="photo-placeholder" id="photoPlaceholder"
+             onclick="document.getElementById('file-foto').click()">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
+          <p>Klik di sini untuk<br>upload foto profil</p>
+          <small>JPG / PNG, maks 5MB</small>
+        </div>
+        <img id="photoDisplay" class="photo-img" src="" alt="Foto Profil"/>
+        <input type="file" id="file-foto" accept="image/*" onchange="previewFoto(event)"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── STATS ─── -->
+  <div class="stats-bar reveal">
+    <!-- ✏️ GANTI: Angka dan label sesuai pencapaianmu -->
+    <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Tahun Belajar</div></div>
+    <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Proyek</div></div>
+    <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Sertifikat</div></div>
+    <div class="stat"><div class="stat-num">💚</div><div class="stat-label">Semangat</div></div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  👩 SECTION TENTANG SAYA                        ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section class="about" id="about">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <span class="section-tag">Tentang Saya</span>
+        <h2 class="section-title">Siapa Aku<br>Sebenarnya?</h2>
+
+        <!-- ✏️ GANTI: Tulis cerita tentang dirimu di sini -->
+        <p>
+          Halo! Saya [nama kamu], seorang [profesi / mahasiswi / jurusan].
+          Saya gemar [kegiatan / passion] dan percaya bahwa setiap detail kecil
+          membuat perbedaan besar.
+        </p>
+        <p>
+          Di waktu luang saya suka [hobi kamu: membaca, mendesain, dll].
+          Saya selalu berusaha belajar hal baru setiap hari.
+        </p>
+
+        <!-- ✏️ GANTI: Tambah / hapus skill sesuai keahlianmu -->
+        <div class="skills-grid">
+          <span class="skill-chip">Microsoft Office</span>
+          <span class="skill-chip">Canva</span>
+          <span class="skill-chip">Figma</span>
+          <span class="skill-chip">HTML / CSS</span>
+          <span class="skill-chip">Public Speaking</span>
+          <span class="skill-chip">Desain Grafis</span>
+          <span class="skill-chip">Manajemen Waktu</span>
+          <span class="skill-chip">Riset & Analisis</span>
+        </div>
+      </div>
+
+      <!-- ✏️ GANTI: Isi dengan pengalaman / pendidikan kamu -->
+      <div class="timeline reveal">
+        <div class="tl-item">
+          <div class="tl-year">2024</div>
+          <div class="tl-body"><h4>Nama Posisi / Kegiatan</h4><span>Nama Organisasi / Instansi</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2023</div>
+          <div class="tl-body"><h4>Nama Posisi / Kegiatan</h4><span>Nama Organisasi / Instansi</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2022</div>
+          <div class="tl-body"><h4>Masuk Kuliah / Lulus SMA</h4><span>Nama Universitas / Sekolah, Malang</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2021</div>
+          <div class="tl-body"><h4>Nama Prestasi / Kegiatan</h4><span>Nama Acara / Tempat</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  🗂️ SECTION PROYEK                              ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section class="projects" id="projects">
+    <div class="reveal">
+      <span class="section-tag">Portofolio</span>
+      <h2 class="section-title">Karya & Proyek</h2>
+      <p class="section-sub">Beberapa proyek yang pernah saya kerjakan.</p>
+    </div>
+
+    <div class="projects-grid reveal">
+
+      <!-- ✏️ CARA ISI KARTU PROYEK:
+           • Ganti emoji pada card-placeholder (atau ganti dengan gambar asli — lihat petunjuk di bawah)
+           • Ganti judul, deskripsi, tag teknologi, dan href link proyek
+           • Tambah / duplikasi kartu sesuai kebutuhan
+
+           CARA PAKAI GAMBAR ASLI:
+           Hapus <div class="card-placeholder">…</div>
+           Ganti dengan: <img class="card-img" src="nama-file-gambar.jpg" alt="Nama Proyek">
+           Pastikan file gambar sudah ada di folder yang sama dengan index.html
+      -->
+
+      <div class="project-card">
+        <div class="card-placeholder">🎨</div>
+        <div class="card-body">
+          <div class="card-tags"><span class="card-tag">Desain</span><span class="card-tag">Canva</span></div>
+          <h3>Nama Proyek Pertama</h3>
+          <p>Deskripsi singkat proyek ini: apa yang dibuat, untuk siapa, dan apa dampaknya.</p>
+          <a href="#" class="card-link">Lihat Detail</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="card-placeholder">📊</div>
+        <div class="card-body">
+          <div class="card-tags"><span class="card-tag">Riset</span><span class="card-tag">Data</span></div>
+          <h3>Nama Proyek Kedua</h3>
+          <p>Deskripsi singkat proyek ini: apa yang dibuat, untuk siapa, dan apa dampaknya.</p>
+          <a href="#" class="card-link">Lihat Detail</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="card-placeholder">🌱</div>
+        <div class="card-body">
+          <div class="card-tags"><span class="card-tag">Web</span><span class="card-tag">HTML</span></div>
+          <h3>Nama Proyek Ketiga</h3>
+          <p>Deskripsi singkat proyek ini: apa yang dibuat, untuk siapa, dan apa dampaknya.</p>
+          <a href="#" class="card-link">Lihat Detail</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  📂 SECTION UPLOAD DOKUMEN & GAMBAR             ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section class="docs" id="docs">
+    <div class="reveal">
+      <span class="section-tag">Dokumen & Galeri</span>
+      <h2 class="section-title">File & Portofolio</h2>
+      <p class="section-sub">Upload CV, sertifikat, atau foto karya kamu untuk ditampilkan di halaman ini.</p>
+    </div>
+
+    <div class="upload-grid reveal">
+
+      <!-- Kolom Kiri: Upload Dokumen -->
+      <div>
+        <p class="upload-section-title">📄 Upload Dokumen (CV, Sertifikat, dll)</p>
+        <div class="upload-zone">
+          <input type="file" id="input-docs" multiple
+            accept=".pdf,.doc,.docx,.ppt,.pptx,.txt"
+            onchange="handleDocs(event)"/>
+          <div class="upload-icon">📁</div>
+          <h4>Seret file ke sini</h4>
+          <p>atau klik area ini untuk pilih file</p>
+          <small>PDF · Word · PowerPoint · TXT</small>
+        </div>
+        <!-- Daftar file yang sudah diupload akan muncul di sini -->
+        <div id="file-list"></div>
+      </div>
+
+      <!-- Kolom Kanan: Upload Gambar -->
+      <div>
+        <p class="upload-section-title">🖼️ Upload Gambar Karya</p>
+        <div class="upload-zone">
+          <input type="file" id="input-imgs" multiple accept="image/*"
+            onchange="handleImgs(event)"/>
+          <div class="upload-icon">🖼️</div>
+          <h4>Seret gambar ke sini</h4>
+          <p>atau klik untuk pilih gambar</p>
+          <small>JPG · PNG · GIF · WebP</small>
+        </div>
+        <!-- Preview gambar akan muncul di sini -->
+        <div id="img-preview-area"></div>
+      </div>
+
+    </div>
+
+    <!-- Catatan penting untuk pengguna -->
+    <div class="note-box reveal">
+      <span>💡</span>
+      <p>
+        <strong>Catatan:</strong> Upload di sini hanya untuk <em>preview sementara</em> di browser kamu
+        — file tidak otomatis tersimpan di website GitHub Pages.
+        Agar file tampil permanen, letakkan file tersebut di folder repositori GitHub kamu,
+        lalu ubah <code>src=</code> atau <code>href=</code> di kode HTML dengan nama file tersebut.
+      </p>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════════╗
+       ║  📬 SECTION KONTAK                              ║
+       ╚══════════════════════════════════════════════════╝ -->
+  <section class="contact" id="contact">
+    <div class="reveal">
+      <span class="section-tag">Kontak</span>
+      <h2 class="section-title">Ayo Berkenalan!</h2>
+      <p class="section-sub">Punya proyek, pertanyaan, atau sekadar mau ngobrol? Saya senang dihubungi lewat platform mana saja.</p>
+
+      <div class="contact-cards">
+        <!-- ✏️ GANTI: href dengan email / link asli kamu -->
+        <a href="mailto:emailkamu@gmail.com" class="contact-card">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          <span>Email</span>
+        </a>
+
+        <a href="https://github.com/usernamekamu" class="contact-card" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23A11.52 11.52 0 0112 6.844a11.52 11.52 0 013.004.404c2.29-1.552 3.297-1.23 3.297-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+          <span>GitHub</span>
+        </a>
+
+        <a href="https://linkedin.com/in/usernamekamu" class="contact-card" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <span>LinkedIn</span>
+        </a>
+
+        <a href="https://wa.me/6281234567890" class="contact-card" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <!-- ✏️ GANTI: Nama dan tahun kamu -->
+    <p>© 2025 Nama Kamu · Dibuat dengan 💚 di Malang</p>
+    <p>Dihosting di <a href="https://pages.github.com" target="_blank">GitHub Pages</a></p>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════
+       ⚙️ JAVASCRIPT — jangan ubah kecuali paham kodenya
+  ═══════════════════════════════════════════════════ -->
+  <script>
+    // Progress bar saat scroll
+    window.addEventListener('scroll', () => {
+      const s = window.scrollY, m = document.body.scrollHeight - window.innerHeight;
+      document.getElementById('progress').style.transform = `scaleX(${s/m})`;
+    });
+
+    // Animasi elemen saat muncul di layar
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Smooth scroll untuk link navigasi
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+
+    // Toggle menu hamburger (mobile)
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    // Preview foto profil — langsung tampil setelah dipilih
+    function previewFoto(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const r = new FileReader();
+      r.onload = ev => {
+        const img = document.getElementById('photoDisplay');
+        const ph  = document.getElementById('photoPlaceholder');
+        img.src = ev.target.result;
+        img.style.display = 'block';
+        ph.style.display  = 'none';
+      };
+      r.readAsDataURL(file);
+    }
+
+    // Tampilkan daftar dokumen yang diupload
+    function handleDocs(e) {
+      const list = document.getElementById('file-list');
+      const icons = { pdf:'📄', doc:'📝', docx:'📝', ppt:'📊', pptx:'📊', txt:'📃' };
+      Array.from(e.target.files).forEach(file => {
+        const ext  = file.name.split('.').pop().toLowerCase();
+        const icon = icons[ext] || '📎';
+        const size = file.size < 1048576
+          ? (file.size/1024).toFixed(0) + ' KB'
+          : (file.size/1048576).toFixed(1) + ' MB';
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        item.innerHTML = `
+          <span class="file-icon">${icon}</span>
+          <span class="file-name">${file.name}</span>
+          <span class="file-size">${size}</span>
+          <button class="file-del" onclick="this.parentElement.remove()" title="Hapus">×</button>`;
+        list.appendChild(item);
+      });
+    }
+
+    // Preview gambar yang diupload
+    function handleImgs(e) {
+      const area = document.getElementById('img-preview-area');
+      Array.from(e.target.files).forEach(file => {
+        const r = new FileReader();
+        r.onload = ev => {
+          const wrap = document.createElement('div');
+          wrap.className = 'img-thumb';
+          wrap.innerHTML = `
+            <img src="${ev.target.result}" alt="${file.name}"/>
+            <button onclick="this.parentElement.remove()" title="Hapus">×</button>`;
+          area.appendChild(wrap);
+        };
+        r.readAsDataURL(file);
+      });
+    }
+
+    // Drag & drop support untuk zone upload
+    document.querySelectorAll('.upload-zone').forEach(zone => {
+      zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+      zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+      zone.addEventListener('drop', e => {
+        e.preventDefault(); zone.classList.remove('dragover');
+        const input = zone.querySelector('input[type="file"]');
+        const dt    = new DataTransfer();
+        Array.from(e.dataTransfer.files).forEach(f => dt.items.add(f));
+        input.files = dt.files;
+        input.dispatchEvent(new Event('change'));
+      });
+    });
+  </script>
+
+</body>
+</html>
